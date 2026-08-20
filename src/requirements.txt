@@ -1,0 +1,27 @@
+# VisualCite Attribution Benchmark Requirements
+
+# Core ML
+torch>=2.0.0
+transformers>=4.40.0
+accelerate>=0.25.0
+
+# Qwen-VL specific
+qwen-vl-utils>=0.0.2
+
+# Dataset
+datasets>=2.14.0
+huggingface_hub>=0.19.0
+
+# Image processing
+Pillow>=9.0.0
+torchvision>=0.15.0
+
+# Utilities
+tqdm>=4.65.0
+numpy>=1.24.0
+scipy>=1.10.0
+openai>=1.40.0
+pydantic>=2.0.0
+
+# Optional: For better memory management
+bitsandbytes>=0.41.0  # For 8-bit/4-bit quantization if needed
