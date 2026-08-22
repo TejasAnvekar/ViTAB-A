@@ -1,0 +1,641 @@
+{
+  "input_path": "vllm_results/gemma3-json/gemma3_4b_it_json_zero_shot_all_splits.jsonl",
+  "raw_records": 5732,
+  "total_records": 5732,
+  "duplicate_records_discarded": 0,
+  "errored_records": 4,
+  "structured_parse_rate": 0.264829,
+  "output_status_counts": {
+    "correct": 12,
+    "genuinely_wrong": 1506,
+    "malformed_but_correct": 14,
+    "malformed_output": 4196,
+    "request_error": 4
+  },
+  "avg_inference_time_ms": 4838.946282,
+  "metrics": {
+    "total_samples": 5732,
+    "cell_level": {
+      "precision": 0.00567,
+      "recall": 0.008723,
+      "f1": 0.006242,
+      "micro_precision": 0.006454,
+      "micro_recall": 0.008723,
+      "micro_f1": 0.007419
+    },
+    "row_level": {
+      "precision": 0.023209,
+      "recall": 0.027565,
+      "f1": 0.024002
+    },
+    "column_level": {
+      "precision": 0.468623,
+      "recall": 0.517969,
+      "f1": 0.481482
+    },
+    "exact_match_rate": 0.004536,
+    "exact_match_count": 26,
+    "partial_match_rate": 0.008723,
+    "partial_match_count": 50,
+    "avg_predicted_cells": 1.351535,
+    "avg_ground_truth_cells": 1.0
+  },
+  "source_consensus": {
+    "unique_source_conditions": 1433,
+    "mean_draw_agreement": 0.9515,
+    "metrics": {
+      "total_samples": 1433,
+      "cell_level": {
+        "precision": 0.005103,
+        "recall": 0.007676,
+        "f1": 0.005562,
+        "micro_precision": 0.005914,
+        "micro_recall": 0.007676,
+        "micro_f1": 0.006681
+      },
+      "row_level": {
+        "precision": 0.022403,
+        "recall": 0.026518,
+        "f1": 0.023163
+      },
+      "column_level": {
+        "precision": 0.468018,
+        "recall": 0.515003,
+        "f1": 0.480639
+      },
+      "exact_match_rate": 0.004187,
+      "exact_match_count": 6,
+      "partial_match_rate": 0.007676,
+      "partial_match_count": 11,
+      "avg_predicted_cells": 1.297976,
+      "avg_ground_truth_cells": 1.0
+    },
+    "by_representation": {
+      "json": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.005103,
+            "recall": 0.007676,
+            "f1": 0.005562,
+            "micro_precision": 0.005914,
+            "micro_recall": 0.007676,
+            "micro_f1": 0.006681
+          },
+          "row_level": {
+            "precision": 0.022403,
+            "recall": 0.026518,
+            "f1": 0.023163
+          },
+          "column_level": {
+            "precision": 0.468018,
+            "recall": 0.515003,
+            "f1": 0.480639
+          },
+          "exact_match_rate": 0.004187,
+          "exact_match_count": 6,
+          "partial_match_rate": 0.007676,
+          "partial_match_count": 11,
+          "avg_predicted_cells": 1.297976,
+          "avg_ground_truth_cells": 1.0
+        },
+        "mean_draw_agreement": 0.9515
+      }
+    }
+  },
+  "breakdowns": {
+    "representation": {
+      "json": {
+        "record_count": 5732,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 5732,
+          "cell_level": {
+            "precision": 0.00567,
+            "recall": 0.008723,
+            "f1": 0.006242,
+            "micro_precision": 0.006454,
+            "micro_recall": 0.008723,
+            "micro_f1": 0.007419
+          },
+          "row_level": {
+            "precision": 0.023209,
+            "recall": 0.027565,
+            "f1": 0.024002
+          },
+          "column_level": {
+            "precision": 0.468623,
+            "recall": 0.517969,
+            "f1": 0.481482
+          },
+          "exact_match_rate": 0.004536,
+          "exact_match_count": 26,
+          "partial_match_rate": 0.008723,
+          "partial_match_count": 50,
+          "avg_predicted_cells": 1.351535,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "temperature": {
+      "0.2": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.005801,
+            "recall": 0.008374,
+            "f1": 0.00626,
+            "micro_precision": 0.006247,
+            "micro_recall": 0.008374,
+            "micro_f1": 0.007156
+          },
+          "row_level": {
+            "precision": 0.023741,
+            "recall": 0.027913,
+            "f1": 0.024489
+          },
+          "column_level": {
+            "precision": 0.467421,
+            "recall": 0.517097,
+            "f1": 0.480662
+          },
+          "exact_match_rate": 0.004885,
+          "exact_match_count": 7,
+          "partial_match_rate": 0.008374,
+          "partial_match_count": 12,
+          "avg_predicted_cells": 1.340544,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "0.4": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.00487,
+            "recall": 0.008374,
+            "f1": 0.005562,
+            "micro_precision": 0.006349,
+            "micro_recall": 0.008374,
+            "micro_f1": 0.007222
+          },
+          "row_level": {
+            "precision": 0.021749,
+            "recall": 0.02582,
+            "f1": 0.022464
+          },
+          "column_level": {
+            "precision": 0.466696,
+            "recall": 0.517097,
+            "f1": 0.479811
+          },
+          "exact_match_rate": 0.003489,
+          "exact_match_count": 5,
+          "partial_match_rate": 0.008374,
+          "partial_match_count": 12,
+          "avg_predicted_cells": 1.318911,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "0.6": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.005277,
+            "recall": 0.008374,
+            "f1": 0.005841,
+            "micro_precision": 0.006186,
+            "micro_recall": 0.008374,
+            "micro_f1": 0.007115
+          },
+          "row_level": {
+            "precision": 0.022622,
+            "recall": 0.027216,
+            "f1": 0.023441
+          },
+          "column_level": {
+            "precision": 0.471491,
+            "recall": 0.519888,
+            "f1": 0.483954
+          },
+          "exact_match_rate": 0.004187,
+          "exact_match_count": 6,
+          "partial_match_rate": 0.008374,
+          "partial_match_count": 12,
+          "avg_predicted_cells": 1.353803,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "0.8": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.006731,
+            "recall": 0.00977,
+            "f1": 0.007306,
+            "micro_precision": 0.007014,
+            "micro_recall": 0.00977,
+            "micro_f1": 0.008166
+          },
+          "row_level": {
+            "precision": 0.024724,
+            "recall": 0.029309,
+            "f1": 0.025613
+          },
+          "column_level": {
+            "precision": 0.468885,
+            "recall": 0.517795,
+            "f1": 0.4815
+          },
+          "exact_match_rate": 0.005583,
+          "exact_match_count": 8,
+          "partial_match_rate": 0.00977,
+          "partial_match_count": 14,
+          "avg_predicted_cells": 1.392882,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "strategy": {
+      "zero_shot": {
+        "record_count": 5732,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 5732,
+          "cell_level": {
+            "precision": 0.00567,
+            "recall": 0.008723,
+            "f1": 0.006242,
+            "micro_precision": 0.006454,
+            "micro_recall": 0.008723,
+            "micro_f1": 0.007419
+          },
+          "row_level": {
+            "precision": 0.023209,
+            "recall": 0.027565,
+            "f1": 0.024002
+          },
+          "column_level": {
+            "precision": 0.468623,
+            "recall": 0.517969,
+            "f1": 0.481482
+          },
+          "exact_match_rate": 0.004536,
+          "exact_match_count": 26,
+          "partial_match_rate": 0.008723,
+          "partial_match_count": 50,
+          "avg_predicted_cells": 1.351535,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "split": {
+      "dev": {
+        "record_count": 376,
+        "unique_source_samples": 94,
+        "metrics": {
+          "total_samples": 376,
+          "cell_level": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "micro_precision": 0.0,
+            "micro_recall": 0.0,
+            "micro_f1": 0.0
+          },
+          "row_level": {
+            "precision": 0.010638,
+            "recall": 0.010638,
+            "f1": 0.010638
+          },
+          "column_level": {
+            "precision": 0.466884,
+            "recall": 0.531915,
+            "f1": 0.48577
+          },
+          "exact_match_rate": 0.0,
+          "exact_match_count": 0,
+          "partial_match_rate": 0.0,
+          "partial_match_count": 0,
+          "avg_predicted_cells": 1.390957,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "test": {
+        "record_count": 388,
+        "unique_source_samples": 97,
+        "metrics": {
+          "total_samples": 388,
+          "cell_level": {
+            "precision": 0.001718,
+            "recall": 0.010309,
+            "f1": 0.002946,
+            "micro_precision": 0.006932,
+            "micro_recall": 0.010309,
+            "micro_f1": 0.00829
+          },
+          "row_level": {
+            "precision": 0.019759,
+            "recall": 0.028351,
+            "f1": 0.021907
+          },
+          "column_level": {
+            "precision": 0.48155,
+            "recall": 0.528351,
+            "f1": 0.491401
+          },
+          "exact_match_rate": 0.0,
+          "exact_match_count": 0,
+          "partial_match_rate": 0.010309,
+          "partial_match_count": 4,
+          "avg_predicted_cells": 1.487113,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "train": {
+        "record_count": 4600,
+        "unique_source_samples": 1150,
+        "metrics": {
+          "total_samples": 4600,
+          "cell_level": {
+            "precision": 0.00692,
+            "recall": 0.01,
+            "f1": 0.00753,
+            "micro_precision": 0.00747,
+            "micro_recall": 0.01,
+            "micro_f1": 0.008552
+          },
+          "row_level": {
+            "precision": 0.026058,
+            "recall": 0.030435,
+            "f1": 0.026756
+          },
+          "column_level": {
+            "precision": 0.462473,
+            "recall": 0.510217,
+            "f1": 0.474948
+          },
+          "exact_match_rate": 0.005652,
+          "exact_match_count": 26,
+          "partial_match_rate": 0.01,
+          "partial_match_count": 46,
+          "avg_predicted_cells": 1.338696,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "validation": {
+        "record_count": 368,
+        "unique_source_samples": 92,
+        "metrics": {
+          "total_samples": 368,
+          "cell_level": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "micro_precision": 0.0,
+            "micro_recall": 0.0,
+            "micro_f1": 0.0
+          },
+          "row_level": {
+            "precision": 0.004076,
+            "recall": 0.008152,
+            "f1": 0.005435
+          },
+          "column_level": {
+            "precision": 0.533648,
+            "recall": 0.589674,
+            "f1": 0.548309
+          },
+          "exact_match_rate": 0.0,
+          "exact_match_count": 0,
+          "partial_match_rate": 0.0,
+          "partial_match_count": 0,
+          "avg_predicted_cells": 1.328804,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    }
+  },
+  "uncertainty_quantification": {
+    "available": true,
+    "usable_records": 5728,
+    "excluded_records": 4,
+    "confidence_definition": "exp(mean_token_logprob) over generated output tokens",
+    "mean_token_logprob": -0.054157,
+    "token_perplexity": 1.055651,
+    "exact_match": {
+      "base_accuracy": 0.004539,
+      "accuracy": 0.004539,
+      "mean_confidence": 0.948738,
+      "mean_confidence_when_correct": 0.94006,
+      "mean_confidence_when_incorrect": 0.948778,
+      "brier_score": 0.898643,
+      "binary_nll": 3.411406,
+      "ece": 0.944199,
+      "ece_bins": [
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 2,
+          "avg_confidence": 0.575595,
+          "accuracy": 0.0,
+          "absolute_gap": 0.575595
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 9,
+          "avg_confidence": 0.65452,
+          "accuracy": 0.0,
+          "absolute_gap": 0.65452
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 117,
+          "avg_confidence": 0.762953,
+          "accuracy": 0.0,
+          "absolute_gap": 0.762953
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 663,
+          "avg_confidence": 0.865226,
+          "accuracy": 0.006033,
+          "absolute_gap": 0.859192
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 4937,
+          "avg_confidence": 0.965043,
+          "accuracy": 0.004456,
+          "absolute_gap": 0.960587
+        }
+      ],
+      "auroc": 0.423313,
+      "auroc_interpretation": "Rank-based discrimination; it is not directly changed by class prevalence when score rankings and class-conditional distributions are held fixed.",
+      "selective_prediction": {
+        "baseline_accuracy": 0.004539,
+        "auarc": 0.003638,
+        "utility_premium": -0.000901,
+        "oracle_auarc": 0.028941,
+        "max_rejection": 0.999825,
+        "aurc": 0.996362,
+        "oracle_aurc": 0.971059,
+        "excess_aurc": 0.025303,
+        "metric_direction": {
+          "auarc": "higher_is_better",
+          "aurc": "lower_is_better"
+        },
+        "coverage_points": {
+          "0.25": {
+            "retained": 1432,
+            "accuracy": 0.002793,
+            "risk": 0.997207,
+            "confidence_threshold": 0.982638
+          },
+          "0.50": {
+            "retained": 2864,
+            "accuracy": 0.002793,
+            "risk": 0.997207,
+            "confidence_threshold": 0.965153
+          },
+          "0.75": {
+            "retained": 4296,
+            "accuracy": 0.003724,
+            "risk": 0.996276,
+            "confidence_threshold": 0.932586
+          },
+          "0.90": {
+            "retained": 5156,
+            "accuracy": 0.004461,
+            "risk": 0.995539,
+            "confidence_threshold": 0.882225
+          },
+          "1.00": {
+            "retained": 5728,
+            "accuracy": 0.004539,
+            "risk": 0.995461,
+            "confidence_threshold": 0.557747
+          }
+        }
+      }
+    },
+    "partial_match": {
+      "base_accuracy": 0.008729,
+      "accuracy": 0.008729,
+      "mean_confidence": 0.948738,
+      "mean_confidence_when_correct": 0.948114,
+      "mean_confidence_when_incorrect": 0.948743,
+      "brier_score": 0.894815,
+      "binary_nll": 3.397133,
+      "ece": 0.940009,
+      "ece_bins": [
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "count": 2,
+          "avg_confidence": 0.575595,
+          "accuracy": 0.0,
+          "absolute_gap": 0.575595
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "count": 9,
+          "avg_confidence": 0.65452,
+          "accuracy": 0.0,
+          "absolute_gap": 0.65452
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 117,
+          "avg_confidence": 0.762953,
+          "accuracy": 0.0,
+          "absolute_gap": 0.762953
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 663,
+          "avg_confidence": 0.865226,
+          "accuracy": 0.007541,
+          "absolute_gap": 0.857684
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 4937,
+          "avg_confidence": 0.965043,
+          "accuracy": 0.009115,
+          "absolute_gap": 0.955929
+        }
+      ],
+      "auroc": 0.475583,
+      "auroc_interpretation": "Rank-based discrimination; it is not directly changed by class prevalence when score rankings and class-conditional distributions are held fixed.",
+      "selective_prediction": {
+        "baseline_accuracy": 0.008729,
+        "auarc": 0.007514,
+        "utility_premium": -0.001215,
+        "oracle_auarc": 0.050028,
+        "max_rejection": 0.999825,
+        "aurc": 0.992486,
+        "oracle_aurc": 0.949972,
+        "excess_aurc": 0.042514,
+        "metric_direction": {
+          "auarc": "higher_is_better",
+          "aurc": "lower_is_better"
+        },
+        "coverage_points": {
+          "0.25": {
+            "retained": 1432,
+            "accuracy": 0.007682,
+            "risk": 0.992318,
+            "confidence_threshold": 0.982638
+          },
+          "0.50": {
+            "retained": 2864,
+            "accuracy": 0.007332,
+            "risk": 0.992668,
+            "confidence_threshold": 0.965153
+          },
+          "0.75": {
+            "retained": 4296,
+            "accuracy": 0.007914,
+            "risk": 0.992086,
+            "confidence_threshold": 0.932586
+          },
+          "0.90": {
+            "retained": 5156,
+            "accuracy": 0.008922,
+            "risk": 0.991078,
+            "confidence_threshold": 0.882225
+          },
+          "1.00": {
+            "retained": 5728,
+            "accuracy": 0.008729,
+            "risk": 0.991271,
+            "confidence_threshold": 0.557747
+          }
+        }
+      }
+    },
+    "conformal_prediction": {
+      "available": false,
+      "reason": "LAC/APS require a normalized probability distribution over all candidate cells; token_logprobs only describe generated tokens."
+    },
+    "limitation": "Generated-token confidence includes JSON syntax and any rationale. It is a sequence-confidence proxy, not a calibrated probability that a cell is correct."
+  }
+}

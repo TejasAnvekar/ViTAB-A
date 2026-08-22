@@ -41,6 +41,25 @@ cd src
 pip install -r requirements.txt
 ```
 
+### Hugging Face Gated Models
+
+Some supported model IDs, including `google/gemma-3-4b-it`, are gated on Hugging Face. Before launching vLLM or running the local model runner with one of these models:
+
+1. Request/accept access for the model on Hugging Face while logged into the account you will use for inference.
+2. Authenticate the runtime with that account, for example:
+
+```bash
+huggingface-cli login
+```
+
+or export a token for the process that starts the model server:
+
+```bash
+export HF_TOKEN=hf_your_token_here
+```
+
+For vLLM OpenAI-compatible serving, make sure the token is present in the environment of the `vllm serve ...` or `python -m vllm.entrypoints.openai.api_server ...` process, not only in the client process that runs `src/vllm_inference.py`.
+
 ## Dataset Setup
 
 By default, the runner expects:

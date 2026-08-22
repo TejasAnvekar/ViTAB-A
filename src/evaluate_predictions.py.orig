@@ -2,7 +2,6 @@
 """Self-contained evaluation for VisualCite vLLM prediction JSONL files."""
 
 import argparse
-from collections import Counter
 import json
 import math
 import re
@@ -56,25 +55,6 @@ def _validate_row(row: Any, line_number: int) -> Dict[str, Any]:
         )
     if not validated["ground_truth_cells"]:
         raise ValueError(f"Line {line_number}: ground_truth_cells must not be empty")
-
-    # Normalize metadata emitted by the independent multi-variant/multi-draw runner.
-    for field in ("representation", "strategy", "split"):
-        value = validated.get(field, "unknown")
-        validated[field] = value.strip() if isinstance(value, str) and value.strip() else "unknown"
-    source_id = validated.get("source_sample_id", validated["sample_id"])
-    validated["source_sample_id"] = str(source_id).strip() or validated["sample_id"]
-    sample_index = validated.get("sample_index", 0)
-    validated["sample_index"] = (
-        int(sample_index)
-        if isinstance(sample_index, int) and not isinstance(sample_index, bool)
-        else 0
-    )
-    temperature = validated.get("temperature")
-    try:
-        temperature = float(temperature) if temperature is not None else None
-    except (TypeError, ValueError):
-        temperature = None
-    validated["temperature"] = temperature if temperature is not None and math.isfinite(temperature) else None
     return validated
 
 
@@ -141,31 +121,8 @@ def _evaluate_sample(row: Dict[str, Any]) -> Dict[str, Any]:
     cell_precision, cell_recall, cell_f1 = _prf(predicted, truth)
     row_precision, row_recall, row_f1 = _prf(pred_rows, truth_rows)
     col_precision, col_recall, col_f1 = _prf(pred_columns, truth_columns)
-    invalid_predictions = sorted(cell for cell in predicted if not CELL_RE.fullmatch(cell))
-    if row.get("error"):
-        output_status = "request_error"
-    elif invalid_predictions:
-        output_status = "invalid_coordinate"
-    elif not row.get("parsed_structured") and predicted == truth:
-        output_status = "malformed_but_correct"
-    elif row.get("guided_json", "parsed_structured" in row) and not row.get(
-        "parsed_structured"
-    ):
-        output_status = "malformed_output"
-    elif not predicted:
-        output_status = "empty_prediction"
-    elif predicted == truth:
-        output_status = "correct"
-    else:
-        output_status = "genuinely_wrong"
     return {
         "sample_id": row["sample_id"],
-        "source_sample_id": row["source_sample_id"],
-        "representation": row["representation"],
-        "strategy": row["strategy"],
-        "split": row["split"],
-        "sample_index": row["sample_index"],
-        "temperature": row["temperature"],
         "predicted_cells": row["predicted_cells"],
         "ground_truth_cells": row["ground_truth_cells"],
         "cell_precision": cell_precision,
@@ -179,9 +136,6 @@ def _evaluate_sample(row: Dict[str, Any]) -> Dict[str, Any]:
         "column_f1": col_f1,
         "exact_match": predicted == truth,
         "partial_match": bool(predicted & truth),
-        "output_status": output_status,
-        "invalid_predicted_cells": invalid_predictions,
-        "draw_agreement": row.get("draw_agreement"),
     }
 
 
@@ -366,72 +320,8 @@ def _uq_for_target(
         "ece": ece,
         "ece_bins": bin_details,
         "auroc": _auroc(confidences, labels),
-        "auroc_interpretation": (
-            "Rank-based discrimination; it is not directly changed by class prevalence "
-            "when score rankings and class-conditional distributions are held fixed."
-        ),
         "selective_prediction": _selective_risk(confidences, labels),
     }
-
-
-def _grouped_metrics(
-    rows: Sequence[Dict[str, Any]],
-    samples: Sequence[Dict[str, Any]],
-    field: str,
-) -> Dict[str, Any]:
-    groups: Dict[str, List[Dict[str, Any]]] = {}
-    for row, sample in zip(rows, samples):
-        value = row.get(field, "unknown")
-        if field == "temperature" and isinstance(value, float):
-            key = f"{value:g}"
-        else:
-            key = str(value) if value is not None else "unknown"
-        groups.setdefault(key, []).append(sample)
-    result: Dict[str, Any] = {}
-    for key, group in sorted(groups.items()):
-        details: Dict[str, Any] = {
-            "record_count": len(group),
-            "unique_source_samples": len({item["source_sample_id"] for item in group}),
-            "metrics": _aggregate(group),
-        }
-        agreements = [
-            float(item["draw_agreement"])
-            for item in group
-            if _finite_float(item.get("draw_agreement")) is not None
-        ]
-        if agreements:
-            details["mean_draw_agreement"] = _mean(agreements)
-        result[key] = details
-    return result
-
-
-def _source_consensus_rows(rows: Sequence[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[float]]:
-    """Collapse repeated temperatures for each source/style/strategy condition."""
-    groups: Dict[Tuple[str, str, str, str], List[Dict[str, Any]]] = {}
-    for row in rows:
-        key = (
-            row["source_sample_id"],
-            row["representation"],
-            row["strategy"],
-            row["split"],
-        )
-        groups.setdefault(key, []).append(row)
-
-    consensus: List[Dict[str, Any]] = []
-    agreements: List[float] = []
-    for key, group in groups.items():
-        predictions = [tuple(sorted(set(row["predicted_cells"]))) for row in group]
-        counts = Counter(predictions)
-        majority, majority_count = counts.most_common(1)[0]
-        representative = dict(group[0])
-        representative["sample_id"] = "__".join(key)
-        representative["predicted_cells"] = list(majority)
-        representative["draw_count"] = len(group)
-        agreement = majority_count / len(group)
-        representative["draw_agreement"] = agreement
-        consensus.append(representative)
-        agreements.append(agreement)
-    return consensus, agreements
 
 
 def _evaluate_uq(
@@ -516,11 +406,8 @@ def evaluate_file(path: Path, output_dir: Path, ece_bins: int = 10) -> Path:
     samples = [_evaluate_sample(row) for row in rows]
     metrics = _aggregate(samples)
     uq = _evaluate_uq(rows, samples, ece_bins)
-    consensus_rows, draw_agreements = _source_consensus_rows(rows)
-    consensus_samples = [_evaluate_sample(row) for row in consensus_rows]
     errored = sum(bool(row.get("error")) for row in rows)
     structured = sum(bool(row.get("parsed_structured")) for row in rows)
-    output_status_counts = Counter(sample["output_status"] for sample in samples)
     latencies = [
         value
         for row in rows
@@ -535,23 +422,8 @@ def evaluate_file(path: Path, output_dir: Path, ece_bins: int = 10) -> Path:
             "duplicate_records_discarded": duplicate_records,
             "errored_records": errored,
             "structured_parse_rate": structured / len(rows) if rows else 0.0,
-            "output_status_counts": dict(sorted(output_status_counts.items())),
             "avg_inference_time_ms": _mean(latencies),
             "metrics": metrics,
-            "source_consensus": {
-                "unique_source_conditions": len(consensus_samples),
-                "mean_draw_agreement": _mean(draw_agreements),
-                "metrics": _aggregate(consensus_samples),
-                "by_representation": _grouped_metrics(
-                    consensus_rows, consensus_samples, "representation"
-                ),
-            },
-            "breakdowns": {
-                "representation": _grouped_metrics(rows, samples, "representation"),
-                "temperature": _grouped_metrics(rows, samples, "temperature"),
-                "strategy": _grouped_metrics(rows, samples, "strategy"),
-                "split": _grouped_metrics(rows, samples, "split"),
-            },
             "uncertainty_quantification": uq,
         }
     )
@@ -564,7 +436,6 @@ def evaluate_file(path: Path, output_dir: Path, ece_bins: int = 10) -> Path:
     print(f"Raw records: {raw_records}")
     print(f"Duplicate records discarded: {duplicate_records}")
     print(f"Errored records: {errored}/{len(rows)}")
-    print(f"Output status counts: {dict(sorted(output_status_counts.items()))}")
     if uq["available"]:
         exact_uq = uq["exact_match"]
         selective = exact_uq["selective_prediction"]
@@ -577,21 +448,6 @@ def evaluate_file(path: Path, output_dir: Path, ece_bins: int = 10) -> Path:
         print(f"UQ usable records: {uq['usable_records']}/{len(rows)}")
     else:
         print(f"UQ unavailable: {uq['reason']}")
-
-    representation_metrics = summary["source_consensus"].get("by_representation", {})
-    if representation_metrics:
-        print("\nPER-REPRESENTATION SOURCE-CONSENSUS RESULTS")
-        print("Representation                 Samples  DrawAgree  Exact     Cell F1")
-        print("-" * 76)
-        for representation, details in representation_metrics.items():
-            grouped = details["metrics"]
-            print(
-                f"{representation:<30} "
-                f"{grouped['total_samples']:>7}  "
-                f"{details.get('mean_draw_agreement', 0.0):>9.4f}  "
-                f"{grouped['exact_match_rate']:>7.4f}  "
-                f"{grouped['cell_level']['f1']:>8.4f}"
-            )
     print(f"Saved summary: {summary_path}")
     return summary_path
 

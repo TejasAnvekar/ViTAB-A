@@ -1,0 +1,207 @@
+{
+  "input_path": "vllm_results/gemma3/gemma3_4b_it/gemma3_4b_it_image_zero_shot_all_splits.jsonl",
+  "raw_records": 1433,
+  "total_records": 1433,
+  "duplicate_records_discarded": 0,
+  "errored_records": 0,
+  "structured_parse_rate": 0.0,
+  "avg_inference_time_ms": 12927.608728,
+  "metrics": {
+    "total_samples": 1433,
+    "cell_level": {
+      "precision": 0.16133,
+      "recall": 0.204466,
+      "f1": 0.174111,
+      "micro_precision": 0.129703,
+      "micro_recall": 0.204466,
+      "micro_f1": 0.158722
+    },
+    "row_level": {
+      "precision": 0.452018,
+      "recall": 0.490579,
+      "f1": 0.463591
+    },
+    "column_level": {
+      "precision": 0.275094,
+      "recall": 0.334962,
+      "f1": 0.293254
+    },
+    "exact_match_rate": 0.124913,
+    "exact_match_count": 179,
+    "partial_match_rate": 0.204466,
+    "partial_match_count": 293,
+    "avg_predicted_cells": 1.576413,
+    "avg_ground_truth_cells": 1.0
+  },
+  "uncertainty_quantification": {
+    "available": true,
+    "usable_records": 1433,
+    "excluded_records": 0,
+    "confidence_definition": "exp(mean_token_logprob) over generated output tokens",
+    "mean_token_logprob": -0.099543,
+    "token_perplexity": 1.104666,
+    "exact_match": {
+      "accuracy": 0.124913,
+      "mean_confidence": 0.905878,
+      "mean_confidence_when_correct": 0.91839,
+      "mean_confidence_when_incorrect": 0.904092,
+      "brier_score": 0.717201,
+      "binary_nll": 2.121583,
+      "ece": 0.780965,
+      "ece_bins": [
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 7,
+          "avg_confidence": 0.772158,
+          "accuracy": 0.0,
+          "absolute_gap": 0.772158
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 531,
+          "avg_confidence": 0.873642,
+          "accuracy": 0.07533,
+          "absolute_gap": 0.798312
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 895,
+          "avg_confidence": 0.926049,
+          "accuracy": 0.155307,
+          "absolute_gap": 0.770742
+        }
+      ],
+      "auroc": 0.625195,
+      "selective_prediction": {
+        "auarc": 0.165873,
+        "oracle_auarc": 0.384444,
+        "aurc": 0.834127,
+        "oracle_aurc": 0.615556,
+        "excess_aurc": 0.218571,
+        "metric_direction": {
+          "auarc": "higher_is_better",
+          "aurc": "lower_is_better"
+        },
+        "coverage_points": {
+          "0.25": {
+            "retained": 359,
+            "accuracy": 0.181058,
+            "risk": 0.818942,
+            "confidence_threshold": 0.928115
+          },
+          "0.50": {
+            "retained": 717,
+            "accuracy": 0.165969,
+            "risk": 0.834031,
+            "confidence_threshold": 0.910301
+          },
+          "0.75": {
+            "retained": 1075,
+            "accuracy": 0.146047,
+            "risk": 0.853953,
+            "confidence_threshold": 0.888407
+          },
+          "0.90": {
+            "retained": 1290,
+            "accuracy": 0.133333,
+            "risk": 0.866667,
+            "confidence_threshold": 0.862177
+          },
+          "1.00": {
+            "retained": 1433,
+            "accuracy": 0.124913,
+            "risk": 0.875087,
+            "confidence_threshold": 0.706903
+          }
+        }
+      }
+    },
+    "partial_match": {
+      "accuracy": 0.204466,
+      "mean_confidence": 0.905878,
+      "mean_confidence_when_correct": 0.91524,
+      "mean_confidence_when_incorrect": 0.903472,
+      "brier_score": 0.65192,
+      "binary_nll": 1.933168,
+      "ece": 0.701412,
+      "ece_bins": [
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "count": 7,
+          "avg_confidence": 0.772158,
+          "accuracy": 0.0,
+          "absolute_gap": 0.772158
+        },
+        {
+          "lower": 0.8,
+          "upper": 0.9,
+          "count": 531,
+          "avg_confidence": 0.873642,
+          "accuracy": 0.150659,
+          "absolute_gap": 0.722983
+        },
+        {
+          "lower": 0.9,
+          "upper": 1.0,
+          "count": 895,
+          "avg_confidence": 0.926049,
+          "accuracy": 0.237989,
+          "absolute_gap": 0.688061
+        }
+      ],
+      "auroc": 0.595584,
+      "selective_prediction": {
+        "auarc": 0.249893,
+        "oracle_auarc": 0.528749,
+        "aurc": 0.750107,
+        "oracle_aurc": 0.471251,
+        "excess_aurc": 0.278856,
+        "metric_direction": {
+          "auarc": "higher_is_better",
+          "aurc": "lower_is_better"
+        },
+        "coverage_points": {
+          "0.25": {
+            "retained": 359,
+            "accuracy": 0.261838,
+            "risk": 0.738162,
+            "confidence_threshold": 0.928115
+          },
+          "0.50": {
+            "retained": 717,
+            "accuracy": 0.249651,
+            "risk": 0.750349,
+            "confidence_threshold": 0.910301
+          },
+          "0.75": {
+            "retained": 1075,
+            "accuracy": 0.226047,
+            "risk": 0.773953,
+            "confidence_threshold": 0.888407
+          },
+          "0.90": {
+            "retained": 1290,
+            "accuracy": 0.218605,
+            "risk": 0.781395,
+            "confidence_threshold": 0.862177
+          },
+          "1.00": {
+            "retained": 1433,
+            "accuracy": 0.204466,
+            "risk": 0.795534,
+            "confidence_threshold": 0.706903
+          }
+        }
+      }
+    },
+    "conformal_prediction": {
+      "available": false,
+      "reason": "LAC/APS require a normalized probability distribution over all candidate cells; token_logprobs only describe generated tokens."
+    },
+    "limitation": "Generated-token confidence includes JSON syntax and any rationale. It is a sequence-confidence proxy, not a calibrated probability that a cell is correct."
+  }
+}
