@@ -7,15 +7,15 @@ BASE_URL="${OPENAI_BASE_URL:-http://localhost:8000/v1}"
 API_KEY="${OPENAI_API_KEY:-EMPTY}"
 JSONL_PATH="${JSONL_PATH:-visualcite.jsonl}"
 OUTPUT_DIR="${OUTPUT_DIR:-vllm_results}"
-CONCURRENCY="${CONCURRENCY:-256}"
+CONCURRENCY="${CONCURRENCY:-1024}"
 MAX_SAMPLES="${MAX_SAMPLES:-999999999}"
 FORCE="${FORCE:-0}"
 
 # SPLITS=(dev)
 SPLITS=(train validation dev test)
 STRATEGIES=(zero_shot few_shot chain_of_thought)
-# MODALITIES=(markdown image json)
-MODALITIES=(json)
+MODALITIES=(markdown image json)
+# MODALITIES=(json)
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -55,7 +55,7 @@ for MODALITY in "${MODALITIES[@]}"; do
                 --max-samples "$MAX_SAMPLES" \
                 --concurrency "$CONCURRENCY" \
                 --output-path "$PARTIAL_PATH" \
-                --temperatures 0.2,0.4,0.6,0.8 
+                --temperatures 0.3,0.5,0.7,0.9 
         done
 
         mv -f "$PARTIAL_PATH" "$OUTPUT_PATH"
