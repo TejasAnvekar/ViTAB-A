@@ -194,6 +194,31 @@ By default, outputs are written under `src/benchmark_results/`:
 
 Checkpoints are stored under `src/checkpoints/`.
 
+## Evaluate and compare vLLM results
+
+Evaluate all prediction JSONL files recursively and write summaries to each
+model's adjacent `eval/` directory:
+
+```bash
+scripts/run_eval_single_model_all.sh
+```
+
+An alternate results root may be passed as the first argument; `ECE_BINS`
+controls calibration granularity. Launch the dashboard with:
+
+```bash
+streamlit run src/results_dashboard.py
+```
+
+It filters and compares models/settings, explores split and temperature
+breakdowns, visualizes output quality and uncertainty, and exports Markdown,
+CSV, and JSON. Generate reports without starting Streamlit with:
+
+```bash
+python src/results_dashboard.py --results-root vllm_results \
+  --generate-report reports/vitab_results_report.md
+```
+
 ## Notes
 
 - Running from `src/` is recommended because default paths are defined relative to that directory.

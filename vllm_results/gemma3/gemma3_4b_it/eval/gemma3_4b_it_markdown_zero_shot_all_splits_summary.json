@@ -1,10 +1,14 @@
 {
-  "input_path": "vllm_results/gemma3/gemma3_4b_it/gemma3_4b_it_markdown_zero_shot_all_splits.jsonl",
+  "input_path": "/mnt/data1/tanvekar/ViTAB-A/vllm_results/gemma3/gemma3_4b_it/gemma3_4b_it_markdown_zero_shot_all_splits.jsonl",
   "raw_records": 1433,
   "total_records": 1433,
   "duplicate_records_discarded": 0,
   "errored_records": 0,
   "structured_parse_rate": 0.0,
+  "output_status_counts": {
+    "malformed_but_correct": 77,
+    "malformed_output": 1356
+  },
   "avg_inference_time_ms": 4240.60364,
   "metrics": {
     "total_samples": 1433,
@@ -33,6 +37,298 @@
     "avg_predicted_cells": 0.819958,
     "avg_ground_truth_cells": 1.0
   },
+  "source_consensus": {
+    "unique_source_conditions": 1433,
+    "mean_draw_agreement": 1.0,
+    "metrics": {
+      "total_samples": 1433,
+      "cell_level": {
+        "precision": 0.063273,
+        "recall": 0.074669,
+        "f1": 0.066605,
+        "micro_precision": 0.091064,
+        "micro_recall": 0.074669,
+        "micro_f1": 0.082055
+      },
+      "row_level": {
+        "precision": 0.273787,
+        "recall": 0.313329,
+        "f1": 0.28466
+      },
+      "column_level": {
+        "precision": 0.105647,
+        "recall": 0.118632,
+        "f1": 0.109781
+      },
+      "exact_match_rate": 0.053733,
+      "exact_match_count": 77,
+      "partial_match_rate": 0.074669,
+      "partial_match_count": 107,
+      "avg_predicted_cells": 0.819958,
+      "avg_ground_truth_cells": 1.0
+    },
+    "by_representation": {
+      "markdown": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.063273,
+            "recall": 0.074669,
+            "f1": 0.066605,
+            "micro_precision": 0.091064,
+            "micro_recall": 0.074669,
+            "micro_f1": 0.082055
+          },
+          "row_level": {
+            "precision": 0.273787,
+            "recall": 0.313329,
+            "f1": 0.28466
+          },
+          "column_level": {
+            "precision": 0.105647,
+            "recall": 0.118632,
+            "f1": 0.109781
+          },
+          "exact_match_rate": 0.053733,
+          "exact_match_count": 77,
+          "partial_match_rate": 0.074669,
+          "partial_match_count": 107,
+          "avg_predicted_cells": 0.819958,
+          "avg_ground_truth_cells": 1.0
+        },
+        "mean_draw_agreement": 1.0
+      }
+    }
+  },
+  "breakdowns": {
+    "representation": {
+      "markdown": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.063273,
+            "recall": 0.074669,
+            "f1": 0.066605,
+            "micro_precision": 0.091064,
+            "micro_recall": 0.074669,
+            "micro_f1": 0.082055
+          },
+          "row_level": {
+            "precision": 0.273787,
+            "recall": 0.313329,
+            "f1": 0.28466
+          },
+          "column_level": {
+            "precision": 0.105647,
+            "recall": 0.118632,
+            "f1": 0.109781
+          },
+          "exact_match_rate": 0.053733,
+          "exact_match_count": 77,
+          "partial_match_rate": 0.074669,
+          "partial_match_count": 107,
+          "avg_predicted_cells": 0.819958,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "temperature": {
+      "unknown": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.063273,
+            "recall": 0.074669,
+            "f1": 0.066605,
+            "micro_precision": 0.091064,
+            "micro_recall": 0.074669,
+            "micro_f1": 0.082055
+          },
+          "row_level": {
+            "precision": 0.273787,
+            "recall": 0.313329,
+            "f1": 0.28466
+          },
+          "column_level": {
+            "precision": 0.105647,
+            "recall": 0.118632,
+            "f1": 0.109781
+          },
+          "exact_match_rate": 0.053733,
+          "exact_match_count": 77,
+          "partial_match_rate": 0.074669,
+          "partial_match_count": 107,
+          "avg_predicted_cells": 0.819958,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "strategy": {
+      "zero_shot": {
+        "record_count": 1433,
+        "unique_source_samples": 1433,
+        "metrics": {
+          "total_samples": 1433,
+          "cell_level": {
+            "precision": 0.063273,
+            "recall": 0.074669,
+            "f1": 0.066605,
+            "micro_precision": 0.091064,
+            "micro_recall": 0.074669,
+            "micro_f1": 0.082055
+          },
+          "row_level": {
+            "precision": 0.273787,
+            "recall": 0.313329,
+            "f1": 0.28466
+          },
+          "column_level": {
+            "precision": 0.105647,
+            "recall": 0.118632,
+            "f1": 0.109781
+          },
+          "exact_match_rate": 0.053733,
+          "exact_match_count": 77,
+          "partial_match_rate": 0.074669,
+          "partial_match_count": 107,
+          "avg_predicted_cells": 0.819958,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    },
+    "split": {
+      "dev": {
+        "record_count": 94,
+        "unique_source_samples": 94,
+        "metrics": {
+          "total_samples": 94,
+          "cell_level": {
+            "precision": 0.058511,
+            "recall": 0.06383,
+            "f1": 0.060284,
+            "micro_precision": 0.089552,
+            "micro_recall": 0.06383,
+            "micro_f1": 0.074534
+          },
+          "row_level": {
+            "precision": 0.299645,
+            "recall": 0.340426,
+            "f1": 0.312057
+          },
+          "column_level": {
+            "precision": 0.106383,
+            "recall": 0.117021,
+            "f1": 0.109929
+          },
+          "exact_match_rate": 0.053191,
+          "exact_match_count": 5,
+          "partial_match_rate": 0.06383,
+          "partial_match_count": 6,
+          "avg_predicted_cells": 0.712766,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "test": {
+        "record_count": 97,
+        "unique_source_samples": 97,
+        "metrics": {
+          "total_samples": 97,
+          "cell_level": {
+            "precision": 0.033505,
+            "recall": 0.051546,
+            "f1": 0.038488,
+            "micro_precision": 0.063291,
+            "micro_recall": 0.051546,
+            "micro_f1": 0.056818
+          },
+          "row_level": {
+            "precision": 0.203535,
+            "recall": 0.247423,
+            "f1": 0.214074
+          },
+          "column_level": {
+            "precision": 0.079897,
+            "recall": 0.092784,
+            "f1": 0.083162
+          },
+          "exact_match_rate": 0.020619,
+          "exact_match_count": 2,
+          "partial_match_rate": 0.051546,
+          "partial_match_count": 5,
+          "avg_predicted_cells": 0.814433,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "train": {
+        "record_count": 1150,
+        "unique_source_samples": 1150,
+        "metrics": {
+          "total_samples": 1150,
+          "cell_level": {
+            "precision": 0.068626,
+            "recall": 0.08087,
+            "f1": 0.072213,
+            "micro_precision": 0.099359,
+            "micro_recall": 0.08087,
+            "micro_f1": 0.089166
+          },
+          "row_level": {
+            "precision": 0.281635,
+            "recall": 0.31913,
+            "f1": 0.292118
+          },
+          "column_level": {
+            "precision": 0.109689,
+            "recall": 0.123478,
+            "f1": 0.11413
+          },
+          "exact_match_rate": 0.058261,
+          "exact_match_count": 67,
+          "partial_match_rate": 0.08087,
+          "partial_match_count": 93,
+          "avg_predicted_cells": 0.813913,
+          "avg_ground_truth_cells": 1.0
+        }
+      },
+      "validation": {
+        "record_count": 92,
+        "unique_source_samples": 92,
+        "metrics": {
+          "total_samples": 92,
+          "cell_level": {
+            "precision": 0.032609,
+            "recall": 0.032609,
+            "f1": 0.032609,
+            "micro_precision": 0.032258,
+            "micro_recall": 0.032609,
+            "micro_f1": 0.032432
+          },
+          "row_level": {
+            "precision": 0.223344,
+            "recall": 0.282609,
+            "f1": 0.237862
+          },
+          "column_level": {
+            "precision": 0.081522,
+            "recall": 0.086957,
+            "f1": 0.083333
+          },
+          "exact_match_rate": 0.032609,
+          "exact_match_count": 3,
+          "partial_match_rate": 0.032609,
+          "partial_match_count": 3,
+          "avg_predicted_cells": 1.01087,
+          "avg_ground_truth_cells": 1.0
+        }
+      }
+    }
+  },
   "uncertainty_quantification": {
     "available": true,
     "usable_records": 1433,
@@ -41,6 +337,7 @@
     "mean_token_logprob": -0.074745,
     "token_perplexity": 1.07761,
     "exact_match": {
+      "base_accuracy": 0.053733,
       "accuracy": 0.053733,
       "mean_confidence": 0.928539,
       "mean_confidence_when_correct": 0.934411,
@@ -75,9 +372,13 @@
         }
       ],
       "auroc": 0.570768,
+      "auroc_interpretation": "Rank-based discrimination; it is not directly changed by class prevalence when score rankings and class-conditional distributions are held fixed.",
       "selective_prediction": {
+        "baseline_accuracy": 0.053733,
         "auarc": 0.062949,
+        "utility_premium": 0.009216,
         "oracle_auarc": 0.210506,
+        "max_rejection": 0.999302,
         "aurc": 0.937051,
         "oracle_aurc": 0.789494,
         "excess_aurc": 0.147556,
@@ -120,6 +421,7 @@
       }
     },
     "partial_match": {
+      "base_accuracy": 0.074669,
       "accuracy": 0.074669,
       "mean_confidence": 0.928539,
       "mean_confidence_when_correct": 0.926622,
@@ -154,9 +456,13 @@
         }
       ],
       "auroc": 0.497533,
+      "auroc_interpretation": "Rank-based discrimination; it is not directly changed by class prevalence when score rankings and class-conditional distributions are held fixed.",
       "selective_prediction": {
+        "baseline_accuracy": 0.074669,
         "auarc": 0.072727,
+        "utility_premium": -0.001942,
         "oracle_auarc": 0.268088,
+        "max_rejection": 0.999302,
         "aurc": 0.927273,
         "oracle_aurc": 0.731912,
         "excess_aurc": 0.195362,

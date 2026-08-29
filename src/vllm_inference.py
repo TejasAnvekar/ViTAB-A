@@ -349,18 +349,13 @@ IMPORTANT: Do NOT repeat the question, table, or instructions. Output ONLY the c
 ATTRIBUTED CELLS:"""
 
 
-def _response_format_instruction(guided_json: bool, allow_rationale: bool = False) -> str:
+def _response_format_instruction(guided_json: bool) -> str:
     if guided_json:
-        rationale_text = (
-            ' Include a concise "rationale" string before the final cells.'
-            if allow_rationale
-            else ' Use null for "rationale".'
-        )
         return (
             'Return ONLY a JSON object matching this shape: '
             '{"cells":["E7"],"rationale":null}. '
-            'Put Excel-style cell coordinates in "cells" without a leading "=".'
-            f"{rationale_text}"
+            'Put Excel-style cell coordinates in "cells" without a leading "=". '
+            'Use "rationale" for a concise explanation when requested; otherwise use null.'
         )
     return """Return ONLY the cell coordinates in Excel formula format. Examples:
 - Single cell: "=E7" or "=B3"
@@ -373,9 +368,9 @@ def _build_prompt(
 ) -> str:
     table = sample.table_text if sample.table_text is not None else "[TABLE IMAGE PROVIDED]"
     coordinate_instruction = (
-        'For this JSON table, the keys inside the top-level "cells" object '
-        "(for example A1 or B3) are the canonical coordinates. Return those keys; "
-        "do not return numeric [row, column] indices."
+        'For this JSON table, valid coordinates are exactly the keys inside the top-level '
+        '"cells" object. Return only those keys in the "cells" array. Do not return '
+        'numeric [row, column] indices. Do not invent coordinates that are not keys in "cells".'
         if sample.representation == "json"
         else "Use the displayed row numbers and column letters as coordinates."
     )
@@ -404,6 +399,13 @@ ATTRIBUTED CELLS:"""
             response_format=_response_format_instruction(guided_json),
         )
     if strategy == "chain_of_thought":
+        internal_reasoning_instruction = (
+            "Think step by step internally, but do not output the reasoning. "
+            "Return only the JSON object."
+            if guided_json
+            else "Think step by step internally, but do not output the reasoning. "
+            "Return only the requested response."
+        )
         template = """You are a table analysis expert. Your task is to identify which cell(s) in the table contain or support the given answer to the question.
 
 TABLE:
@@ -412,38 +414,59 @@ TABLE:
 QUESTION: {question}
 ANSWER: {answer}
 
-Let's think step by step:
+TASK: Identify the cell coordinate(s) that contain or directly support this answer. If the answer is computed from multiple cells, include the source cells or range.
+COORDINATE SYSTEM: {coordinate_instruction}
 
-1. First, understand what the question is asking for.
-2. Then, locate where the answer "{answer}" appears or can be derived from in the table.
-3. Identify the specific cell coordinate(s) using Excel-style notation (columns as letters, rows as numbers 1, 2, 3...).
-   {coordinate_instruction}
-4. If the answer is computed from multiple cells (e.g., a sum), include the source cells or range.
-5. Use this response format: {response_format}
+{internal_reasoning_instruction}
 
-IMPORTANT: Do NOT repeat the question or table in your reasoning.
+RESPONSE FORMAT: {response_format}
 
-REASONING:
-"""
+IMPORTANT: Do NOT repeat the question, table, instructions, or reasoning. Output ONLY the requested response.
+
+ATTRIBUTED CELLS:"""
         return template.format(
             table=table,
             question=sample.question,
             answer=sample.answer,
             coordinate_instruction=coordinate_instruction,
-            response_format=_response_format_instruction(guided_json, allow_rationale=True),
+            internal_reasoning_instruction=internal_reasoning_instruction,
+            response_format=_response_format_instruction(guided_json),
         )
     if strategy != "few_shot":
         raise ValueError(f"Unknown strategy: {strategy}")
 
-    example_table = example.table_text if example is not None else "| A | B |\\n| 1 | 2 |"
-    example_question = example.question if example is not None else "What is in cell A1?"
-    example_answer = example.answer if example is not None else "1"
-    example_cells = _ground_truth_cells(example) if example is not None else ["A1"]
-    example_response = (
-        json.dumps({"cells": example_cells, "rationale": None})
-        if guided_json
-        else ", ".join(f"={cell}" for cell in example_cells)
-    )
+    if example is not None:
+        example_table = example.table_text
+        example_question = example.question
+        example_answer = example.answer
+        example_cells = _ground_truth_cells(example)
+    elif sample.representation == "json":
+        example_table = json.dumps(
+            {
+                "coordinate_system": "Each key in cells is the canonical Excel coordinate.",
+                "cells": {
+                    "A1": "Name",
+                    "B1": "Score",
+                    "A2": "Alice",
+                    "B2": "91",
+                },
+            },
+            indent=2,
+        )
+        example_question = "What score did Alice get?"
+        example_answer = "91"
+        example_cells = ["B2"]
+    else:
+        example_table = "| A | B |\\n| 1 | 2 |"
+        example_question = "What is in cell A1?"
+        example_answer = "1"
+        example_cells = ["A1"]
+    if guided_json and example is None and sample.representation == "json":
+        example_response = '{"cells":["B2"],"rationale":null}'
+    elif guided_json:
+        example_response = json.dumps({"cells": example_cells, "rationale": None})
+    else:
+        example_response = ", ".join(f"={cell}" for cell in example_cells)
     template = """You are a table analysis expert. Your task is to identify which cell(s) in the table contain or support the given answer to the question.
 
 Here is an example:

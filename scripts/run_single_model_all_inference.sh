@@ -6,16 +6,16 @@ MODEL_LABEL="${MODEL_LABEL:-gemma3_4b_it}"
 BASE_URL="${OPENAI_BASE_URL:-http://localhost:8000/v1}"
 API_KEY="${OPENAI_API_KEY:-EMPTY}"
 JSONL_PATH="${JSONL_PATH:-visualcite.jsonl}"
-OUTPUT_DIR="${OUTPUT_DIR:-vllm_results}"
-CONCURRENCY="${CONCURRENCY:-1024}"
+OUTPUT_DIR="${OUTPUT_DIR:-vllm_results/gemma3/gemma3_4b_it}"
+CONCURRENCY="${CONCURRENCY:-32}"
 MAX_SAMPLES="${MAX_SAMPLES:-999999999}"
-FORCE="${FORCE:-0}"
+FORCE="${FORCE:-1}"
 
 # SPLITS=(dev)
 SPLITS=(train validation dev test)
 STRATEGIES=(zero_shot few_shot chain_of_thought)
-MODALITIES=(markdown image json)
-# MODALITIES=(json)
+# MODALITIES=(markdown image json)
+MODALITIES=(json)
 
 mkdir -p "$OUTPUT_DIR"
 
