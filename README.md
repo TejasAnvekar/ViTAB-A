@@ -2,225 +2,93 @@
 
 Unified benchmark framework for VisualCite table-cell attribution across multiple vision-language models.
 
-ViTAB evaluates how well models identify the supporting table cell(s) for a question-answer pair, with support for:
-- Multiple model families: Gemma, InternVL 3.5, Qwen3-VL, Molmo2
-- Multiple table representations: JSON, Markdown, and styled images
-- Multiple prompting strategies: zero-shot, few-shot, chain-of-thought
-- Confidence analysis: internal confidence, verbalized certainty, alignment metrics
-- Uncertainty quantification: split conformal prediction (LAC + APS)
+ViTAB evaluates how well models identify the supporting table cell(s) for a question-answer pair across model families, table representations, prompting strategies, confidence analysis, and uncertainty quantification.
 
-## Project Structure
+## Setup
 
-This repository is consolidated into a single source directory:
-
-```text
-ViTAB-A/
-├── README.md
-└── src/
-		├── benchmark_runner.py
-		├── confidence_benchmark_runner.py
-		├── model_handler.py
-		├── data_loader.py
-		├── prompt_builder.py
-		├── metrics.py
-		├── uncertainty_quantification.py
-		├── test_benchmark.py
-		└── requirements.txt
-```
-
-## Requirements
-
-- Python 3.10+
-- CUDA-capable GPU recommended for model inference
-- VisualCite dataset file in JSONL format
-
-Install dependencies:
+Install the Python dependencies:
 
 ```bash
 cd src
 pip install -r requirements.txt
 ```
 
-### Hugging Face Gated Models
-
-Some supported model IDs, including `google/gemma-3-4b-it`, are gated on Hugging Face. Before launching vLLM or running the local model runner with one of these models:
-
-1. Request/accept access for the model on Hugging Face while logged into the account you will use for inference.
-2. Authenticate the runtime with that account, for example:
-
-```bash
-huggingface-cli login
-```
-
-or export a token for the process that starts the model server:
-
-```bash
-export HF_TOKEN=hf_your_token_here
-```
-
-For vLLM OpenAI-compatible serving, make sure the token is present in the environment of the `vllm serve ...` or `python -m vllm.entrypoints.openai.api_server ...` process, not only in the client process that runs `src/vllm_inference.py`.
-
-## Dataset Setup
-
-By default, the runner expects:
-
-```text
-../visualcite.jsonl
-```
-
-relative to `src/`.
-
-So with the default configuration, place your dataset at:
+Place the VisualCite dataset at the repository root unless you override `JSONL_PATH`:
 
 ```text
 ViTAB-A/visualcite.jsonl
 ```
 
-You can override this with `--jsonl-path`.
-
-## Quick Start
-
-Run a small smoke test from `src/`:
+For gated Hugging Face models, request access on Hugging Face and authenticate before starting vLLM:
 
 ```bash
-cd src
-python benchmark_runner.py \
-	--models Qwen/Qwen3-VL-2B-Instruct \
-	--representations markdown \
-	--strategies zero_shot \
-	--max-samples 5
+huggingface-cli login
 ```
 
-## Running `benchmark_runner.py` Properly
-
-`benchmark_runner.py` uses relative defaults (especially for `--jsonl-path`), so run it in one of these two ways:
-
-### Option A (recommended): run from `src/`
+or export a token in the environment that starts the model server:
 
 ```bash
-cd src
-python benchmark_runner.py \
-	--jsonl-path ../visualcite.jsonl \
-	--models Qwen/Qwen3-VL-2B-Instruct \
-	--representations markdown \
-	--strategies zero_shot \
-	--max-samples 5
+export HF_TOKEN=hf_your_token_here
 ```
 
-### Option B: run from repository root
+## Run From Scripts
+
+Run commands from the repository root.
+
+### Serve each configured model and run inference
 
 ```bash
-cd ..  # if you are currently inside src
-python src/benchmark_runner.py \
-	--jsonl-path ./visualcite.jsonl \
-	--models Qwen/Qwen3-VL-2B-Instruct \
-	--representations markdown \
-	--strategies zero_shot \
-	--max-samples 5
+bash scripts/run_all_models_serve_then_infer.sh
 ```
 
-Important:
-- If you run from root, do **not** rely on the default `--jsonl-path`.
-- Always set `--jsonl-path` explicitly when your working directory is not `src/`.
+This starts a vLLM OpenAI-compatible server for each configured model, runs inference across the configured splits, strategies, and modalities, then writes results under `vllm_results/`.
 
-Run a larger benchmark:
+Useful overrides:
 
 ```bash
-cd src
-python benchmark_runner.py \
-	--models Qwen/Qwen3-VL-2B-Instruct Qwen/Qwen3-VL-4B-Instruct \
-	--representations json markdown image_arial \
-	--strategies zero_shot few_shot chain_of_thought \
-	--max-samples 200 \
-	--split dev
+MODELS="Qwen3-VL-2B-Instruct" \
+SPLITS="dev" \
+STRATEGIES="zero_shot" \
+MODALITIES="json" \
+MAX_SAMPLES=5 \
+CUDA_VISIBLE_DEVICES=0 \
+bash scripts/run_all_models_serve_then_infer.sh
 ```
 
-## Core CLI Options
-
-Common options:
-- `--models`: one or more HF model IDs
-- `--representations`: `json`, `markdown`, `image_arial`, `image_times_new_roman`, `image_red`, `image_blue`, `image_green`
-- `--strategies`: `zero_shot`, `few_shot`, `chain_of_thought`
-- `--jsonl-path`: path to dataset JSONL
-- `--max-samples`: maximum samples to process
-- `--split`: `train`, `validation`, `dev`, `test`
-- `--single-cell-only`: filter to samples with exactly one ground-truth cell
-
-Runtime and resume:
-- `--output-dir`: output directory (default `benchmark_results`)
-- `--checkpoint-dir`: checkpoint directory (default `checkpoints`)
-- `--no-resume`: disable checkpoint resume
-- `--clear-checkpoints`: remove previous checkpoints before run
-
-Model/runtime settings:
-- `--device`: `cuda` or `cpu`
-- `--dtype`: `float16`, `bfloat16`, `float32`
-- `--no-flash-attention`
-
-Confidence/UQ options:
-- `--extract-internal-confidence`
-- `--extract-verbalized-certainty`
-- `--cqp-template`, `--cqp-max-tokens`, `--cqp-temperature`
-- `--enable-conformal-uq`
-- `--conformal-calibration-ratio`, `--conformal-alpha`, `--conformal-seed`
-
-## Testing
-
-Run lightweight validation tests:
+### Run inference against an already running server
 
 ```bash
-cd src
-python test_benchmark.py --test all
+bash scripts/run_single_model_all_inference.sh
 ```
 
-Or specific test groups:
+Useful overrides:
 
 ```bash
-python test_benchmark.py --test metrics
-python test_benchmark.py --test prompts
-python test_benchmark.py --test parsing
-python test_benchmark.py --test checkpoint
+OPENAI_BASE_URL=http://localhost:8000/v1 \
+OPENAI_API_KEY=EMPTY \
+MODEL_NAME=vitab-model \
+MODEL_LABEL=Qwen3-VL-2B-Instruct \
+JSONL_PATH=visualcite.jsonl \
+OUTPUT_DIR=vllm_results/Qwen3/Qwen3-VL-2B-Instruct \
+MAX_SAMPLES=5 \
+bash scripts/run_single_model_all_inference.sh
 ```
 
-## Outputs
-
-By default, outputs are written under `src/benchmark_results/`:
-- instance logs (per sample)
-- verbalized certainty logs
-- aggregated summaries (JSON)
-- CSV exports
-- markdown report
-- uncertainty summaries (if enabled)
-
-Checkpoints are stored under `src/checkpoints/`.
-
-## Evaluate and compare vLLM results
-
-Evaluate all prediction JSONL files recursively and write summaries to each
-model's adjacent `eval/` directory:
+### Evaluate generated prediction files
 
 ```bash
-scripts/run_eval_single_model_all.sh
+bash scripts/run_eval_all_model_all.sh
 ```
 
-An alternate results root may be passed as the first argument; `ECE_BINS`
-controls calibration granularity. Launch the dashboard with:
+Pass a different results root as the first argument if needed:
 
 ```bash
-streamlit run src/results_dashboard.py
+bash scripts/run_eval_all_model_all.sh vllm_results
 ```
 
-It filters and compares models/settings, explores split and temperature
-breakdowns, visualizes output quality and uncertainty, and exports Markdown,
-CSV, and JSON. Generate reports without starting Streamlit with:
+Set `ECE_BINS` to change calibration binning:
 
 ```bash
-python src/results_dashboard.py --results-root vllm_results \
-  --generate-report reports/vitab_results_report.md
+ECE_BINS=15 bash scripts/run_eval_all_model_all.sh vllm_results
 ```
 
-## Notes
-
-- Running from `src/` is recommended because default paths are defined relative to that directory.
-- If few-shot validation examples are unavailable at the dataset path, the prompt builder falls back to placeholder examples.
-- Large models may require significant GPU memory and can offload to CPU/disk automatically.
